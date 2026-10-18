@@ -1,0 +1,500 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You, My Love - Elsa</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: Georgia, serif;
+    color: #f9ddec;
+    background: radial-gradient(
+        ellipse at center,
+        #602447,
+        #41142f,
+        #210719
+    );
+}
+
+.scene {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    animation: muncul 0.8s ease;
+}
+
+.scene.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes muncul {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    width: min(350px, 95vw);
+    padding: 40px 24px 25px;
+    border: 1px solid #a95c83;
+    border-radius: 16px;
+    background: rgba(255, 235, 246, 0.08);
+    box-shadow: 0 15px 50px #14000e55;
+    position: relative;
+}
+
+.flower {
+    font-size: 40px;
+    margin-bottom: 10px;
+    animation: goyang 3s infinite ease-in-out;
+}
+
+@keyframes goyang {
+    50% {
+        transform: rotate(12deg) scale(1.1);
+    }
+}
+
+h1 {
+    font-size: 25px;
+    font-weight: normal;
+}
+
+p {
+    color: #dcb5ca;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 22px 0;
+}
+
+.dot {
+    width: 9px;
+    height: 9px;
+    border: 1px solid #ed80b6;
+    border-radius: 50%;
+}
+
+.dot.on {
+    background: #ed80b6;
+    box-shadow: 0 0 10px #ed80b6;
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 48px);
+    justify-content: center;
+    gap: 10px;
+}
+
+.keypad button {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid #ffffff20;
+    color: #f9ddec;
+    background: #ffffff10;
+    cursor: pointer;
+}
+
+.keypad button:hover {
+    background: #ed80b640;
+}
+
+.message {
+    min-height: 20px;
+    font-size: 11px;
+    color: #ffb4d5;
+}
+
+.primary {
+    border: 1px solid #e9a0c2;
+    background: #8e315966;
+    color: #ffe6f1;
+    border-radius: 30px;
+    padding: 12px 22px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.gift {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 35px auto;
+    cursor: pointer;
+    animation: melayang 2s infinite ease-in-out;
+}
+
+@keyframes melayang {
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.box {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    width: 130px;
+    height: 95px;
+    background: #ed78b3;
+    border-bottom: 4px solid #b6387c;
+}
+
+.lid {
+    position: absolute;
+    left: 0;
+    bottom: 95px;
+    width: 150px;
+    height: 22px;
+    background: #ff9ac9;
+}
+
+.ribbon {
+    position: absolute;
+    left: 62px;
+    bottom: 0;
+    width: 25px;
+    height: 117px;
+    background: #ffdf61;
+}
+
+.bow {
+    position: absolute;
+    top: 0;
+    left: 38px;
+    font-size: 45px;
+    color: #ffdf61;
+    z-index: 2;
+}
+
+.letter {
+    max-height: 45vh;
+    overflow-y: auto;
+    text-align: left;
+    line-height: 1.9;
+    font-size: 14px;
+}
+
+.petals {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.petal {
+    position: absolute;
+    top: -20px;
+    color: #f38bbd;
+    animation: jatuh linear infinite;
+}
+
+@keyframes jatuh {
+    to {
+        transform: translateY(110vh) rotate(360deg);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="petals" id="petals"></div>
+
+<!-- HALAMAN PIN -->
+<section class="scene active" id="pin">
+    <div class="card">
+        <div class="flower">🌸</div>
+
+        <h1>For You, My Love</h1>
+        <p>Masukkan kode rahasia kita</p>
+
+        <div class="dots" id="dots">
+            <i class="dot"></i>
+            <i class="dot"></i>
+            <i class="dot"></i>
+            <i class="dot"></i>
+            <i class="dot"></i>
+            <i class="dot"></i>
+        </div>
+
+        <div class="keypad">
+            <button onclick="press('1')">1</button>
+            <button onclick="press('2')">2</button>
+            <button onclick="press('3')">3</button>
+            <button onclick="press('4')">4</button>
+            <button onclick="press('5')">5</button>
+            <button onclick="press('6')">6</button>
+            <button onclick="press('7')">7</button>
+            <button onclick="press('8')">8</button>
+            <button onclick="press('9')">9</button>
+            <button onclick="hapus()">×</button>
+            <button onclick="press('0')">0</button>
+            <button onclick="cekPin()">↵</button>
+        </div>
+
+        <div class="message" id="pesan"></div>
+        <p>Dibuat dengan ❤️ untuk Elsa</p>
+    </div>
+</section>
+
+<!-- HADIAH -->
+<section class="scene" id="hadiah">
+    <p>Sentuh kotak hadiah untuk membukanya</p>
+
+    <div class="gift" onclick="pindah('ulangtahun')">
+        <div class="bow">🎀</div>
+        <div class="lid"></div>
+        <div class="box"></div>
+        <div class="ribbon"></div>
+    </div>
+</section>
+
+<!-- UCAPAN ULANG TAHUN -->
+<section class="scene" id="ulangtahun">
+    <div class="card">
+        <div class="flower">🌷</div>
+        <p>HARI SPESIALMU</p>
+        <h1>Selamat Ulang Tahun,<br>Pacarku ♡</h1>
+
+        <p>
+            Selamat bertambah usia, sayangku.
+            Semoga semua impianmu menjadi nyata,
+            kebahagiaan selalu menyertaimu,
+            dan senyummu tidak pernah hilang.
+        </p>
+
+        <button class="primary"
+                onclick="pindah('surat')">
+            Buka surat kecilku ♡
+        </button>
+    </div>
+</section>
+
+<!-- SURAT CINTA -->
+<section class="scene" id="surat">
+    <div class="card">
+        <h1>Untuk PACAR, Sayang ❤️</h1>
+
+        <div class="letter">
+            <p>Hai, Pacarku.</p>
+
+            <p>
+                hari ini kamu ulang tahun ya?.
+                happy birtdayyy sayangggg semoga panjang umur
+                cemoga diberiii kesehatan,diii beri rezeki yanggg melimpah.
+                diii beriiii kemudahan dalammm mengatasi masalah masalah kamuu yaa.
+            </p>
+
+            <p>
+                kamuu ini birtdayy yangg ke 19 tahunn yaaa?
+                idihhhh udah tuaa ajaaa hehehehe dan 
+                cemoga makin cuintaaa dan sayangggg cama akuuuu yaaa.
+            </p>
+
+            <p>
+                semoga hari hari kamuu alwayssss happy yaaa sayangggg,
+                terutama hari ini adalah hariiii spesial buaattt kamuuu dan hub kitaa,
+                emangnya kita ada hub yaaa?
+                hehehehe canda sayangggggkuuuuu muachhhhhh.
+            </p>
+
+            <p>
+                Jangan pernah merasa sendirian.
+                Aku berharap semua hal indah yang
+                kamu impikan perlahan menjadi nyata.
+            </p>
+
+            <p>
+                Dengan banyak cinta,<br>
+                seseorang yang ingin melihatmu bahagia ♡
+            </p>
+        </div>
+
+        <button class="primary"
+                onclick="pindah('kenangan')">
+            Lihat Foto kamu →
+        </button>
+    </div>
+</section>
+
+<!-- KENANGAN -->
+<section class="scene" id="kenangan">
+    <div class="card">
+        <div class="flower">🌸</div>
+        <h1>Foto Kamu ♡</h1>
+
+        <img src="Elsa.JPEG"
+     alt="Foto Kamu"
+     style="width:250px; max-width:100%; border-radius:15px;">
+
+        <p>
+            Cantik banget cihhh Pacarku
+            muachhhhhhhh SAYANGGGGKUUUUUUUUUUUUU.
+        </p>
+
+        <button class="primary"
+                onclick="pindah('musik')">
+            Lagu untukmu ♪
+        </button>
+    </div>
+</section>
+
+<!-- MUSIK -->
+<section class="scene" id="musik">
+    <div class="card">
+        <h1>Music of My Heart ♫</h1>
+        <p>Lagu spesial untuk Elsa ❤️</p>
+
+        <audio controls loop style="width:100%; margin-top:15px;">
+            <source src="musik.mp3" type="audio/mpeg">
+            Browser kamu tidak mendukung audio.
+        </audio>
+
+        <button class="primary" onclick="pindah('akhir')">
+            Pesan terakhir ♡
+        </button>
+    </div>
+</section>
+
+        <button class="primary"
+                onclick="pindah('akhir')">
+            Pesan terakhir ♡
+        </button>
+    </div>
+</section>
+
+<!-- HALAMAN AKHIR -->
+<section class="scene" id="akhir">
+    <div class="card">
+        <div class="flower">🌷</div>
+        <h1>For You, Always.</h1>
+
+        <p>
+            Selamat ulang tahun sekali lagi, Elsa.
+            Tetap bahagia, tetap bersinar,
+            dan semoga hidupmu selalu dipenuhi cinta.
+            
+            I LOVE YOU SAYANGGGGKUUUUUUUUUUUUU
+        </p>
+
+        <button class="primary"
+                onclick="pindah('ulangtahun')">
+            Baca lagi ↻
+        </button>
+    </div>
+</section>
+
+<script>
+const PIN = "060424";
+let kode = "";
+
+function pindah(id) {
+    document.querySelectorAll(".scene").forEach(
+        halaman => halaman.classList.remove("active")
+    );
+
+    document.getElementById(id).classList.add("active");
+}
+
+function perbaruiTitik() {
+    document.querySelectorAll(".dot").forEach(
+        (titik, i) => {
+            titik.classList.toggle("on", i < kode.length);
+        }
+    );
+}
+
+function press(angka) {
+    if (kode.length >= 6) return;
+
+    kode += angka;
+    perbaruiTitik();
+
+    document.getElementById("pesan").textContent = "";
+
+    if (kode.length === 6) {
+        cekPin();
+    }
+}
+
+function hapus() {
+    kode = kode.slice(0, -1);
+    perbaruiTitik();
+}
+
+function cekPin() {
+    if (kode === PIN) {
+        kode = "";
+        perbaruiTitik();
+        pindah("hadiah");
+    } else {
+        document.getElementById("pesan").textContent =
+            "PIN salah, coba lagi ya ❤️";
+
+        kode = "";
+        perbaruiTitik();
+    }
+}
+
+document.getElementById("fileMusik")
+.addEventListener("change", function(event) {
+    const file = event.target.files[0];
+
+    if (file) {
+        const audio = document.getElementById("audio");
+        audio.src = URL.createObjectURL(file);
+        audio.play().catch(() => {});
+    }
+});
+
+// Animasi bunga yang jatuh
+const wadah = document.getElementById("petals");
+
+for (let i = 0; i < 25; i++) {
+    const bunga = document.createElement("span");
+
+    bunga.className = "petal";
+    bunga.textContent = ["✿", "❀", "♥"][i % 3];
+    bunga.style.left = Math.random() * 100 + "%";
+    bunga.style.animationDuration =
+        (8 + Math.random() * 12) + "s";
+    bunga.style.animationDelay =
+        (-Math.random() * 15) + "s";
+    bunga.style.fontSize =
+        (10 + Math.random() * 12) + "px";
+
+    wadah.appendChild(bunga);
+}
+</script>
+
+</body>
+</html>
